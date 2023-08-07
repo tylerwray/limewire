@@ -5,15 +5,9 @@ one:
   email: MyString
   country: MyString
   spotify_user_id: MyString
-  spotify_profile_image_url: MyString
-  spotify_profile_image_height: 1
-  spotify_profile_image_width: 1
 
 two:
   display_name: MyString
   email: MyString
   country: MyString
   spotify_user_id: MyString
-  spotify_profile_image_url: MyString
-  spotify_profile_image_height: 1
-  spotify_profile_image_width: 1

@@ -1,7 +1,5 @@
-<h1>Welcome Home!<h1>
-
 <ul>
-<%= @playlists.each do |playlist| %>
-  <li><%= playlist.name %></li>
-<% end %>
+  <% @playlists.each do |playlist| %>
+    <li><%= playlist.name %></li>
+  <% end %>
 </ul>

@@ -3,11 +3,11 @@
 class ApplicationController < ActionController::Base
   before_action :require_login
 
-  def login(current_user_id)
+  def session_login(current_user_id)
     session[:current_user_id] = current_user_id
   end
 
-  def logout
+  def session_logout
     session.delete(:current_user_id)
   end
 
@@ -22,7 +22,7 @@ class ApplicationController < ActionController::Base
   def current_user
     user = User.find_by(id: session[:current_user_id])
     unless user
-      logout
+      session_logout
       redirect_to(login_path)
       return
     end
@@ -32,8 +32,11 @@ class ApplicationController < ActionController::Base
 
   def spotify_user
     callback_proc = proc do |new_access_token|
-      @_current_user = User.update(@current_user.id, spotify_access_token: new_access_token)
+      @_current_user = User.update(current_user.id, spotify_access_token: new_access_token)
     end
+
+    @user_profile ||= RSpotify::User.oauth_get(current_user.spotify_user_id, "me",
+      { headers: { "Authorization" => "Bearer #{current_user.spotify_access_token}" } })
 
     @spotify_user ||= RSpotify::User.new(
       {
@@ -43,11 +46,15 @@ class ApplicationController < ActionController::Base
           "access_refresh_callback" => callback_proc,
         },
         "id" => current_user.spotify_user_id,
+        "birthdate" => @user_profile["birthdate"],
+        "country" => @user_profile["country"],
+        "display_name" => @user_profile["display_name"],
+        "email" => @user_profile["email"],
+        "followers" => @user_profile["followers"],
+        "images" => @user_profile["images"],
+        "product" => @user_profile["product"],
       }
     )
-
-    puts "spotify_user: #{@spotify_user}"
-    @spotify_user
   end
 
   private

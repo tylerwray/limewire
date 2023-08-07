@@ -9,9 +9,6 @@ class CreateUsers < ActiveRecord::Migration[7.0]
       t.string(:spotify_user_id)
       t.string(:spotify_access_token)
       t.string(:spotify_refresh_token)
-      t.string(:spotify_profile_image_url)
-      t.integer(:spotify_profile_image_height)
-      t.integer(:spotify_profile_image_width)
 
       t.timestamps
     end

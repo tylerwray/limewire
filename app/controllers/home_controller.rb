@@ -2,8 +2,7 @@
 
 class HomeController < ApplicationController
   def index
-    puts "spotify_user: #{spotify_user.playlists}"
-
-    @playlists = []
+    @current_user_image = spotify_user.images.first
+    @playlists = spotify_user.playlists
   end
 end
