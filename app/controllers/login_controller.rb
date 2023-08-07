@@ -4,6 +4,7 @@ class LoginController < ApplicationController
   skip_before_action :require_login
 
   def spotify_login
+    puts "spotify_login: #{request.env["omniauth.auth"]}"
     spotify_user = RSpotify::User.new(request.env["omniauth.auth"])
 
     # Assuming the last image in the array is the largest one.
@@ -14,6 +15,8 @@ class LoginController < ApplicationController
       email: spotify_user.email,
       country: spotify_user.country,
       spotify_user_id: spotify_user.id,
+      spotify_access_token: spotify_user.credentials.token,
+      spotify_refresh_token: spotify_user.credentials.refresh_token,
       spotify_profile_image_url: image["url"],
       spotify_profile_image_height: image["height"],
       spotify_profile_image_width: image["width"],
@@ -24,13 +27,13 @@ class LoginController < ApplicationController
     user = User.find_by(spotify_user_id: spotify_user.id)
 
     # Set user session.
-    session[:current_user_id] = user.id
+    login(user.id)
 
     redirect_to(root_url)
   end
 
   def destroy
-    session.delete(:current_user_id)
+    logout
     flash[:notice] = "You have successfully logged out."
     redirect_to(root_url, status: :see_other)
   end

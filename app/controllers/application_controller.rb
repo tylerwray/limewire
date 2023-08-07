@@ -3,6 +3,14 @@
 class ApplicationController < ActionController::Base
   before_action :require_login
 
+  def login(current_user_id)
+    session[:current_user_id] = current_user_id
+  end
+
+  def logout
+    session.delete(:current_user_id)
+  end
+
   def logged_in?
     !!session[:current_user_id]
   end
@@ -12,8 +20,34 @@ class ApplicationController < ActionController::Base
   # a Rails application; logging in sets the session value and
   # logging out removes it.
   def current_user
-    @_current_user ||= session[:current_user_id] &&
-      User.find_by(id: session[:current_user_id])
+    user = User.find_by(id: session[:current_user_id])
+    unless user
+      logout
+      redirect_to(login_path)
+      return
+    end
+
+    @_current_user ||= session[:current_user_id] && user
+  end
+
+  def spotify_user
+    callback_proc = proc do |new_access_token|
+      @_current_user = User.update(@current_user.id, spotify_access_token: new_access_token)
+    end
+
+    @spotify_user ||= RSpotify::User.new(
+      {
+        "credentials" => {
+          "token" => current_user.spotify_access_token,
+          "refresh_token" => current_user.spotify_refresh_token,
+          "access_refresh_callback" => callback_proc,
+        },
+        "id" => current_user.spotify_user_id,
+      }
+    )
+
+    puts "spotify_user: #{@spotify_user}"
+    @spotify_user
   end
 
   private
