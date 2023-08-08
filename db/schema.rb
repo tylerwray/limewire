@@ -18,9 +18,15 @@ ActiveRecord::Schema[7.0].define(version: 2023_08_06_160724) do
     t.string "display_name"
     t.string "email"
     t.string "country"
+    t.string "birthdate"
     t.string "spotify_user_id"
+    t.string "spotify_product"
+    t.string "spotify_followers"
     t.string "spotify_access_token"
     t.string "spotify_refresh_token"
+    t.string "spotify_profile_image_url"
+    t.string "spotify_profile_image_width"
+    t.string "spotify_profile_image_height"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.index ["spotify_user_id"], name: "index_users_on_spotify_user_id", unique: true
