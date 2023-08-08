@@ -33,12 +33,12 @@ class ApplicationController < ActionController::Base
   end
   helper_method :current_user
 
-  def spotify_user
+  def spotify
     callback_proc = proc do |new_access_token|
       @_current_user = User.update(current_user.id, spotify_access_token: new_access_token)
     end
 
-    @spotify_user ||= RSpotify::User.new(
+    @_spotify ||= Spotify.new(
       {
         "credentials" => {
           "token" => current_user.spotify_access_token,

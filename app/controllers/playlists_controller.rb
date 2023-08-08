@@ -3,7 +3,15 @@
 class PlaylistsController < ApplicationController
   def index
     @current_page = :playlists
-    @current_user_profile_image_url = current_user.spotify_profile_image_url
-    @playlists = spotify_user.playlists
+
+    @pagination, @playlists = helpers.paginate(page_params) do |limit:, offset:|
+      spotify.playlists(limit: limit, offset: offset)
+    end
+  end
+
+  private
+
+  def page_params
+    params.permit(:page)
   end
 end
