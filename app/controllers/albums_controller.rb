@@ -2,7 +2,16 @@
 
 class AlbumsController < ApplicationController
   def index
-    @current_page = :albums
-    @albums = []
+    @current_page = :playlists
+
+    @pagination, @albums = helpers.paginate(page_params) do |limit:, offset:|
+      spotify.saved_albums(limit: limit, offset: offset)
+    end
+  end
+
+  private
+
+  def page_params
+    params.permit(:page)
   end
 end
