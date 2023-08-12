@@ -23,18 +23,10 @@ class PaginationViewModel
     page + 1
   end
 
-  def next_page?
-    page < total_pages
-  end
-
   def previous_page
     return 1 if first_page?
 
     page - 1
-  end
-
-  def previous_page?
-    page > 1
   end
 
   def last_page?
