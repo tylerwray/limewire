@@ -1,4 +1,4 @@
-# frozen_string_literal: true
+# frozen_string_literal: false
 
 class Spotify
   def initialize(params)
@@ -30,5 +30,9 @@ class Spotify
     { total: parsed["total"], items: parsed["items"].map { |i| RSpotify::Track.new(i["track"]) } }
   ensure
     RSpotify.raw_response = false
+  end
+
+  def search(query)
+    RSpotify::Base.search(query, "artist, album, track")
   end
 end

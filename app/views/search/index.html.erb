@@ -1,0 +1,37 @@
+<div class="grid gap-4 p-4">
+  <% @results.each do |result| %>
+    <div class="grid grid-cols-[auto_1fr] gap-2">
+      <% if result.type == "album" %>
+        <% if result.images&.first %>
+          <img src="<%= result.images.first['url'] %>" class="h-20 w-20 rounded-lg shadow" />
+        <% end %>
+        <div>
+          <div class="text-lg font-medium pb-1"><%= result.name %></div>
+          <div class="text-sm text-gray-600"><%= result.artists.first.name %></div>
+        </div>
+      <% end %>
+      <% if result.type == "artist" %>
+        <% if result.images&.first %>
+          <img src="<%= result.images.first['url'] %>" class="h-20 w-20 rounded-lg shadow" />
+        <% end %>
+        <div>
+          <div class="text-lg font-medium pb-1"><%= result.name %></div>
+          <div class="text-sm text-gray-600">
+            <%=
+              "#{number_with_delimiter(result.followers['total'], delimiter: ',')} #{'follower'.pluralize(result.followers['total'])}"
+            %>
+          </div>
+        </div>
+      <% end %>
+      <% if result.type == "track" %>
+        <% if result.album.images&.first %>
+          <img src="<%= result.album.images.first['url'] %>" class="h-20 w-20 rounded-lg shadow" />
+        <% end %>
+        <div>
+          <div class="text-lg font-medium pb-1"><%= result.name %></div>
+          <div class="text-sm text-gray-600"><%= result.artists.map(&:name).join(', ') %></div>
+        </div>
+      <% end %>
+    </div>
+  <% end %>
+</div>
