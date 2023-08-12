@@ -31,18 +31,4 @@ class Spotify
   ensure
     RSpotify.raw_response = false
   end
-
-  def followed_artists(limit:, after:)
-    RSpotify.raw_response = true
-    response = @spotify_user.following(type: "artist", limit: limit, after: after)
-    parsed = JSON.parse(response) unless response.nil? || response.empty?
-    puts "Cursors: #{parsed["artists"]["cursors"].inspect}"
-    {
-      after: parsed["artists"]["cursors"]["after"],
-      before: parsed["artists"]["cursors"]["before"],
-      items: parsed["artists"]["items"].map { |a| RSpotify::Artist.new(a) },
-    }
-  ensure
-    RSpotify.raw_response = false
-  end
 end
