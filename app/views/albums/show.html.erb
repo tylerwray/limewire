@@ -1,7 +1,12 @@
+<div class="px-4 grid gap-2">
+  <img src="<%= @album.images.first['url'] %>" class="w-96 h-96 rounded-lg shadow" />
+  <div>
+    <%= "#{@tracks.count} #{'tracks'.pluralize(@tracks.count)}" %>
+  </div>
+</div>
 <div class="grid gap-4 p-4">
-  <% @saved_tracks.each do |track| %>
-    <div class="grid grid-cols-[auto_1fr_auto] gap-2 group hover:bg-gray-300 rounded-lg cursor-pointer p-2">
-      <img src="<%= track.album.images.first['url'] %>" class="h-20 w-20 rounded-lg shadow" />
+  <% @tracks.each do |track| %>
+    <div class="grid grid-cols-[1fr_auto] gap-2 group hover:bg-gray-300 rounded-lg cursor-pointer p-2">
       <div>
         <div class="text-lg font-medium pb-1"><%= track.name %></div>
         <div class="text-sm text-gray-600"><%= track.artists.map(&:name).join(', ') %></div>
@@ -18,5 +23,3 @@
     </div>
   <% end %>
 </div>
-
-<%= render partial: 'shared/pagination', locals: { pagination: @pagination } %>

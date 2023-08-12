@@ -3,6 +3,7 @@
 class SavedTracksController < ApplicationController
   def index
     @current_page = :saved_tracks
+    @crumbs = [{ name: "Saved Tracks", path: "/saved_tracks" }]
 
     @pagination, @saved_tracks = helpers.paginate(page_params) do |limit:, offset:|
       spotify.saved_tracks(limit: limit, offset: offset)

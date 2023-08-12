@@ -294,10 +294,25 @@
         </nav>
 
         <header class="bg-white shadow">
-          <div class="mx-auto max-w-7xl px-4 py-6 sm:px-6 lg:px-8">
-            <h1 class="text-3xl font-bold tracking-tight text-gray-900">
-              <%= @current_page.to_s.gsub('_', ' ').titleize %>
-            </h1>
+          <div class="mx-auto max-w-7xl px-4 py-6 sm:px-6 lg:px-8 flex gap-1 items-center">
+            <% @crumbs.each_with_index do |crumb, index| %>
+              <a class="text-xl font-medium tracking-tight text-gray-900" href="<%= crumb[:path] %>">
+                <%= crumb[:name] %>
+              </a>
+
+              <% if index != (@crumbs.count - 1) %>
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  fill="none"
+                  viewBox="0 0 24 24"
+                  stroke-width="1.5"
+                  stroke="currentColor"
+                  class="w-6 h-6 stroke-gray-400 stroke-1"
+                >
+                  <path stroke-linecap="round" stroke-linejoin="round" d="M8.25 4.5l7.5 7.5-7.5 7.5" />
+                </svg>
+              <% end %>
+            <% end %>
           </div>
         </header>
         <main>
