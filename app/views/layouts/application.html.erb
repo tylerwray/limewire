@@ -4,12 +4,19 @@
     <title>Limewire</title>
     <meta name="viewport" content="width=device-width,initial-scale=1" />
     <script defer src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js"></script>
+    <script defer async src="https://sdk.scdn.co/spotify-player.js"></script>
 
     <%= csrf_meta_tags %>
     <%= csp_meta_tag %>
     <%= stylesheet_link_tag 'tailwind', 'inter-font', 'data-turbo-track': 'reload' %>
+    <%= javascript_include_tag 'spotifyPlayer', 'defer': 'defer' %>
 
     <%= stylesheet_link_tag 'application' %>
+    <script>
+      window.env = {
+        SPOTIFY_ACCESS_TOKEN: "<%= current_user.spotify_access_token %>",
+      };
+    </script>
   </head>
 
   <body class="h-full">

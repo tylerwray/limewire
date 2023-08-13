@@ -11,7 +11,10 @@
         <div class="text-lg font-medium pb-1"><%= track.name %></div>
         <div class="text-sm text-gray-600"><%= track.artists.map(&:name).join(', ') %></div>
       </div>
-      <div class="text-gray-400 group-hover:text-gray-900 self-center px-8">
+      <button
+        class="text-gray-400 group-hover:text-gray-900 self-center px-8"
+        onclick="window.SPOTIFY.playTrack('<%= track.id %>')"
+      >
         <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" class="w-6 h-6">
           <path
             fill-rule="evenodd"
@@ -19,7 +22,7 @@
             clip-rule="evenodd"
           />
         </svg>
-      </div>
+      </button>
     </div>
   <% end %>
 </div>

@@ -12,5 +12,7 @@ Rails.application.routes.draw do
   get "/settings", to: "settings#index"
   get "/search", to: "search#index"
 
+  put "/playback/play", to: "playback#play"
+
   get "/auth/spotify/callback", to: "login#spotify_login"
 end

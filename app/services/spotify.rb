@@ -1,13 +1,15 @@
 # frozen_string_literal: false
 
 class Spotify
+  attr_accessor :user
+
   def initialize(params)
-    @spotify_user = RSpotify::User.new(params)
+    @user = RSpotify::User.new(params)
   end
 
   def playlists(limit:, offset:)
     RSpotify.raw_response = true
-    response = @spotify_user.playlists(limit: limit, offset: offset)
+    response = @user.playlists(limit: limit, offset: offset)
     parsed = JSON.parse(response) unless response.nil? || response.empty?
     { total: parsed["total"], items: parsed["items"].map { |i| RSpotify::Playlist.new(i) } }
   ensure
@@ -20,7 +22,7 @@ class Spotify
 
   def saved_albums(limit:, offset:)
     RSpotify.raw_response = true
-    response = @spotify_user.saved_albums(limit: limit, offset: offset)
+    response = @user.saved_albums(limit: limit, offset: offset)
     parsed = JSON.parse(response) unless response.nil? || response.empty?
     { total: parsed["total"], items: parsed["items"].map { |i| RSpotify::Album.new(i["album"]) } }
   ensure
@@ -33,7 +35,7 @@ class Spotify
 
   def saved_tracks(limit:, offset:)
     RSpotify.raw_response = true
-    response = @spotify_user.saved_tracks(limit: limit, offset: offset)
+    response = @user.saved_tracks(limit: limit, offset: offset)
     parsed = JSON.parse(response) unless response.nil? || response.empty?
     { total: parsed["total"], items: parsed["items"].map { |i| RSpotify::Track.new(i["track"]) } }
   ensure
@@ -61,5 +63,10 @@ class Spotify
 
   def search(query)
     RSpotify::Base.search(query, "artist, album, track")
+  end
+
+  def play_track(device_id, track_id)
+    player = RSpotify::Player.new(@user)
+    player.play(device_id, { uris: ["spotify:track:#{track_id}"] })
   end
 end
